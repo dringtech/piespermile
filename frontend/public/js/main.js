@@ -3,7 +3,7 @@ var piespermileApp = angular.module('piespermileApp', [
 ]);
 
 piespermileApp.filter('pievalue', ['$log', function($log) {
-  var standard_pie=387;
+  var standard_pie=314;
   return function(calories) {
     var pies = calories / standard_pie;
     return pies.toFixed(1);
