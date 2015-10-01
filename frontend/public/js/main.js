@@ -2,6 +2,38 @@ var piespermileApp = angular.module('piespermileApp', [
   'ngRoute', 'ngResource', 'mgcrea.ngStrap', 'leaflet-directive', 'nemLogging'
 ]);
 
+piespermileApp.filter('pievalue', ['$log', function($log) {
+  var standard_pie=387;
+  return function(calories) {
+    var pies = calories / standard_pie;
+    return pies.toFixed(1);
+  }
+}])
+
+piespermileApp.filter('calories', ['$log', function($log) {
+  var biking = 40; // cals per km
+  var walking = 94; // cals per km
+  return function(aRoute) {
+    var getModes = function(leg) {
+      $log.info(leg.steps[0]);
+      return leg.steps.map(function(x) {return x.travel_mode});
+    }
+    var modes = aRoute.legs.map(getModes).
+      reduce(function(p,c) { return p.join(c); }).
+      filter(function (item, index, self) {
+        return self.indexOf(item) == index;
+      });
+    var dist = aRoute.legs.map(function(x) {return x.distance.value}).reduce(function(p, c) {return p + c}) / 1000;
+
+    if ( modes.indexOf('WALKING') > -1 ) {
+      return dist * walking;
+    } else if (modes.indexOf('BICYCLING') > -1 ) {
+      return dist * biking;
+    } else {
+      return 0;
+    }
+  };
+}]);
 piespermileApp.filter('totalDist', ['$log', function($log) {
   return function(aRoute) {
     return aRoute.legs.map(function(x) {return x.distance.value}).reduce(function(p, c) {return p + c});
@@ -15,6 +47,19 @@ piespermileApp.filter('mileize', ['$log', function($log) {
   };
 }]);
 
+piespermileApp.filter('getModes', ['$log', function($log) {
+  return function(aRoute) {
+    var getModes = function(leg) {
+      $log.info(leg.steps[0]);
+      return leg.steps.map(function(x) {return x.travel_mode});
+    }
+    return aRoute.legs.map(getModes).
+      reduce(function(p,c) { return p.join(c); }).
+      filter(function (item, index, self) {
+        return self.indexOf(item) == index;
+      }).join(", ");
+  };
+}]);
 
 piespermileApp.config(['$routeProvider',
   function($routeProvider) {
@@ -44,7 +89,7 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location', 'pi
     function( $log, $location, piespermileRoute ) {
       $log.info('main controller initialising');
       var self = this;
-      self.start = 'Hebden Bridge';
+      self.start = '13, Melbourne Street, Hebden Bridge';
       self.end = 'Mytholmroyd';
       self.go = function() {
         piespermileRoute.getRoute(self.start, self.end);
