@@ -9,14 +9,19 @@ ng-app="piespermileApp"
 <link href="/css/2dumb_regular_macroman/stylesheet.css" type="text/css" charset="utf-8" rel="stylesheet" />
 <link href="/css/3dumb_regular_macroman/stylesheet.css" type="text/css" charset="utf-8" rel="stylesheet" />
 <link href="css/main.css" rel="stylesheet"/>
+<link href="/vendor/leaflet.css" rel="stylesheet"/>
 {% endblock %}
 
 {% block scripts %}
-<script src="/vendor/angular.min.js"></script>
-<script src="/vendor/angular-route.min.js"></script>
-<script src="/vendor/angular-resource.min.js"></script>
-<script src="/vendor/angular-strap.min.js"></script>
-<script src="/vendor/angular-strap.tpl.min.js"></script>
+{% set min = '' %}
+<script src="/vendor/angular{{ min }}.js"></script>
+<script src="/vendor/angular-route{{ min }}.js"></script>
+<script src="/vendor/angular-resource{{ min }}.js"></script>
+<script src="/vendor/angular-strap{{ min }}.js"></script>
+<script src="/vendor/angular-leaflet-directive{{ min }}.js"></script>
+<script src="/vendor/angular-simple-logger{{ min }}.js"></script>
+<script src="/vendor/angular-strap.tpl{{ min }}.js"></script>
+<script src="/vendor/leaflet.js"></script>
 <script src="/js/main.js"></script>
 {% endblock %}
 
@@ -35,6 +40,7 @@ ng-app="piespermileApp"
   </div>
   <div id="navbar" class="collapse navbar-collapse" bs-collapse-target>
     <ul class="nav navbar-nav" bs-collapse-toggle>
+        <li data-match-route="/route"><a href="#/route">Route</a></li>
         <li data-match-route="/config"><a href="#/about">About</a></li>
     </ul>
   </div>

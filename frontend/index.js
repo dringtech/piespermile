@@ -11,7 +11,8 @@ nunjucks.configure(path.join(__dirname, 'views'), {
 router.use(express.static(path.join(__dirname, 'public')));
 [
   'angular', 'angular-route', 'angular-resource', 'angular-strap/dist',
-  'bootstrap/dist'
+  'bootstrap/dist', 'leaflet/dist', 'angular-leaflet-directive/dist',
+  'angular-simple-logger/dist'
 ].map(function(lib) {
   console.log(path.join(__dirname, 'components', lib));
   router.use('/vendor', express.static(path.join(__dirname, '../node_modules', lib)));

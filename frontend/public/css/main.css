@@ -6,6 +6,10 @@ h1, h2, h3, h4 {
   font-family: '3dumbregular';
 }
 
+.large-map {
+  height: 500px;
+}
+
 // Copyright 2015 Giles Dring
 
 // Licensed under the Apache License, Version 2.0 (the "License");
