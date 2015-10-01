@@ -8,6 +8,8 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride());
 
+router.use(require('./route'));
+
 module.exports = router;
 
 // Copyright 2015 Giles Dring
