@@ -22,10 +22,15 @@ piespermileApp.config(['$routeProvider',
       });
   }]);
 
-piespermileApp.controller('piespermileMainController', ['$log', '$location',
-    function( $log, $location ) {
+piespermileApp.controller('piespermileMainController', ['$log', '$location', 'piespermileRoute',
+    function( $log, $location, piespermileRoute ) {
       $log.info('main controller initialising');
       var self = this;
+      self.go = function() {
+        piespermileRoute.start = self.start;
+        piespermileRoute.end = self.end;
+        $location.path('/route');
+      }
     }
     ]);
 
@@ -68,9 +73,11 @@ piespermileApp.controller('piespermileAboutController', ['$log',
 piespermileApp.factory('piespermileRoute', ['$log',
   function($log) {
     // factory function body that constructs shinyNewServiceInstance
+    var start = null;
+    var end = null;
     return {
-      start: 'the start',
-      end: 'the end'
+      start: start,
+      end: end
     };
   }
   ]);
