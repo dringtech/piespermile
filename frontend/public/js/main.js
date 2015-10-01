@@ -2,6 +2,20 @@ var piespermileApp = angular.module('piespermileApp', [
   'ngRoute', 'ngResource', 'mgcrea.ngStrap', 'leaflet-directive', 'nemLogging'
 ]);
 
+piespermileApp.filter('totalDist', ['$log', function($log) {
+  return function(aRoute) {
+    return aRoute.legs.map(function(x) {return x.distance.value}).reduce(function(p, c) {return p + c});
+  };
+}]);
+
+piespermileApp.filter('mileize', ['$log', function($log) {
+  return function(distanceInMetres) {
+    var distance = distanceInMetres * 0.000621371;
+    return distance.toFixed(2) + " Miles";
+  };
+}]);
+
+
 piespermileApp.config(['$routeProvider',
   function($routeProvider) {
     $routeProvider.
@@ -12,6 +26,10 @@ piespermileApp.config(['$routeProvider',
       when('/route', {
         templateUrl: '/partials/route.html',
         controller: 'piespermileRouteController as ctrl'
+      }).
+      when('/map', {
+        templateUrl: '/partials/map.html',
+        controller: 'piespermileMapController as ctrl'
       }).
       when('/about', {
         templateUrl: '/partials/about.html',
@@ -36,6 +54,13 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location', 'pi
     ]);
 
 piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRoute',
+  function($log, piespermileRoute) {
+    var controller = this;
+    controller.routes = piespermileRoute.result;
+  }
+  ]);
+
+piespermileApp.controller('piespermileMapController', ['$log', 'piespermileRoute',
     function($log, piespermileRoute) {
       var controller = this;
 

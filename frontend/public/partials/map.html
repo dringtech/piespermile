@@ -1,9 +1,6 @@
-<p>Here are your route options</p>
-<ul>
-<li ng-repeat="route in ctrl.routes()">
-  {{ route.routes[0].summary }} &mdash; {{ route.routes[0] | totalDist | mileize }}
-</li>
-</ul>
+<div class='fill'>
+  <leaflet class='large-map fill' defaults="ctrl.defaults" lf-center="ctrl.center"></leaflet>
+</div>
 <!--
   Copyright 2015 Giles Dring
 
