@@ -29,10 +29,11 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location',
     }
     ]);
 
-piespermileApp.controller('piespermileRouteController', ['$log',
-    function($log) {
+piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRoute',
+    function($log, piespermileRoute) {
       var controller = this;
       $log.info('route controller initialising');
+      $log.info(piespermileRoute.start);
       angular.extend(controller, {
         defaults: {
           tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
@@ -60,6 +61,16 @@ piespermileApp.controller('piespermileAboutController', ['$log',
         $log.info('about controller initialising');
     }
     ]);
+
+piespermileApp.factory('piespermileRoute', ['$log',
+  function($log) {
+    // factory function body that constructs shinyNewServiceInstance
+    return {
+      start: 'the start',
+      end: 'the end'
+    };
+  }
+  ]);
 
 // Copyright 2015 Giles Dring
 
