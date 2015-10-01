@@ -26,9 +26,10 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location', 'pi
     function( $log, $location, piespermileRoute ) {
       $log.info('main controller initialising');
       var self = this;
+      self.start = 'Hebden Bridge';
+      self.end = 'Mytholmroyd';
       self.go = function() {
-        piespermileRoute.start = self.start;
-        piespermileRoute.end = self.end;
+        piespermileRoute.getRoute(self.start, self.end);
         $location.path('/route');
       }
     }
@@ -37,12 +38,12 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location', 'pi
 piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRoute',
     function($log, piespermileRoute) {
       var controller = this;
-      $log.info('route controller initialising');
-      $log.info(piespermileRoute.start);
+
       var stamenTiles='//stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg';
       var tonerTiles='//stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png';
       var osmTiles='http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
       var ocmTiles='http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png';
+      controller.result=piespermileRoute.result;
       angular.extend(controller, {
         defaults: {
           tileLayer: osmTiles,
@@ -70,14 +71,25 @@ piespermileApp.controller('piespermileAboutController', ['$log',
     }
     ]);
 
-piespermileApp.factory('piespermileRoute', ['$log',
-  function($log) {
+piespermileApp.factory('piespermileRoute', ['$log', '$resource',
+  function($log, $resource) {
     // factory function body that constructs shinyNewServiceInstance
-    var start = null;
-    var end = null;
+    var route = $resource('/api/route/:from/:to');
+    var routeInfo = null;
+    var getRoute = function(start, end) {
+      $log.info('getting route');
+      if (start != null || end != null) {
+        $log.info('Route ' + start + ' -> ' + end)
+        var call = route.query({from: start, to: end}, function(returned) {
+            $log.info(returned);
+            routeInfo = returned;
+          });
+      }
+      return null;
+    }
     return {
-      start: start,
-      end: end
+      getRoute: getRoute,
+      result: function() { return routeInfo; }
     };
   }
   ]);
