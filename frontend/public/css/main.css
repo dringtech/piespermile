@@ -1,3 +1,7 @@
+html, body {
+    height: 100%;
+}
+
 body {
   padding-top: 50px;
   font-family: '2dumbregular';
@@ -6,8 +10,9 @@ h1, h2, h3, h4 {
   font-family: '3dumbregular';
 }
 
-.large-map {
-  height: 500px;
+.fill {
+  min-height: 100%;
+  height: 100%;
 }
 
 // Copyright 2015 Giles Dring
