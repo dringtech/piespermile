@@ -38,8 +38,6 @@ piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRou
       var tonerTiles='//stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png';
       var osmTiles='http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
       var ocmTiles='http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png';
-      $log.info(ocmTiles);
-      //  tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
       angular.extend(controller, {
         defaults: {
           tileLayer: osmTiles,
