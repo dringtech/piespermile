@@ -2,9 +2,16 @@
 
 <p>Where are you travelling to today?</p>
 
-<input type='text'><label>Start:</label></input>
-<input type='text'><label>End:</label></input>
-
+<div>
+<label for='start'>Start:</label>
+<input id='start' type='text' ng-model='ctrl.start'></input>
+</div>
+<map>
+<div>
+</map>
+<label for='end'>End:</label>
+<input id='end' type='text' ng-model='ctrl.end'></input>
+</div>
 <!--
   Copyright 2015 Giles Dring
 

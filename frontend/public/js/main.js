@@ -34,10 +34,15 @@ piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRou
       var controller = this;
       $log.info('route controller initialising');
       $log.info(piespermileRoute.start);
+      var stamenTiles='//stamen-tiles-{s}.a.ssl.fastly.net/watercolor/{z}/{x}/{y}.jpg';
+      var tonerTiles='//stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}.png';
+      var osmTiles='http://otile1.mqcdn.com/tiles/1.0.0/osm/{z}/{x}/{y}.png';
+      var ocmTiles='http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png';
+      $log.info(ocmTiles);
+      //  tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png'
       angular.extend(controller, {
         defaults: {
-          tileLayer: 'http://{s}.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png',
-          maxZoom: 14,
+          tileLayer: osmTiles,
           path: {
             weight: 10,
             color: '#800000',
