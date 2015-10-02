@@ -1,11 +1,58 @@
 var q = require('q');
 var google_key=process.env.GOOGLE_API_KEY;
 var request = require('request');
+var Route = require('./route').Route;
 
 const WALKING_MODE='walking';
 const DRIVING_MODE='driving';
 const CYCLING_MODE='bicycling'
 const TRANSIT_MODE='transit';
+
+var arraySum = function(prev, curr) {
+  return prev + curr;
+}
+
+function getDistance(path) {
+  if (path.length == 0) {
+    return 0;
+  } else {
+    return path.
+      map(function(x) { return x.distance.value; }).reduce(arraySum);
+  }
+};
+
+var totalDistance = function(route) {
+  return getDistance(route.legs);
+}
+
+var routeModes = function(route) {
+  var modes = [WALKING_MODE, CYCLING_MODE, DRIVING_MODE, TRANSIT_MODE];
+
+  var getModes = function(leg, mode) {
+    var matching = leg.steps.
+      filter(function(x) {
+        return x.travel_mode.toLowerCase() == mode;
+      });
+    return getDistance(matching);
+  }
+  var getDistances = function(segment, mode) {
+    return segment.map(function(x) {
+      return getModes(x, mode);
+    }).reduce(arraySum);
+  }
+
+  return modes.
+    map(function(mode) {
+      return [
+        mode,
+        getDistances(route.legs, mode)
+      ];
+    }).
+    reduce(function(result, current, index) {
+      result[current[0]] = current[1];
+      return result;
+    }, {});
+}
 
 var getGoogleDirections=function(from, to, mode) {
   if (from == null) throw "'from' must be defined";
@@ -23,7 +70,12 @@ var getGoogleDirections=function(from, to, mode) {
   request(api_call, function (error, response, body) {
     if (error != null) throw error;
     if (response.statusCode == 200) {
-      deferred.resolve(JSON.parse(body));
+      var res = JSON.parse(body);
+      var route = new Route();
+      route.setSource(JSON.parse(body));
+      route.setDistance( totalDistance(res.routes[0]) );
+      route.setModes( routeModes( res.routes[0] ));
+      deferred.resolve(route);
     } else {
       throw response.statusMessage + ' (HTTP ' + response.statusCode + ')';
     }

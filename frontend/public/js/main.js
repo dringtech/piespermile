@@ -3,40 +3,20 @@ var piespermileApp = angular.module('piespermileApp', [
 ]);
 
 piespermileApp.filter('pievalue', ['$log', function($log) {
-  var standard_pie=314;
+  var standard_pie=314; // A standard pie is 314 calories
   return function(calories) {
     var pies = calories / standard_pie;
     return pies.toFixed(1);
   }
-}])
+}]);
 
 piespermileApp.filter('calories', ['$log', function($log) {
-  var biking = 40; // cals per km
-  var walking = 94; // cals per km
-  return function(aRoute) {
-    var getModes = function(leg) {
-      $log.info(leg.steps[0]);
-      return leg.steps.map(function(x) {return x.travel_mode});
-    }
-    var modes = aRoute.legs.map(getModes).
-      reduce(function(p,c) { return p.join(c); }).
-      filter(function (item, index, self) {
-        return self.indexOf(item) == index;
-      });
-    var dist = aRoute.legs.map(function(x) {return x.distance.value}).reduce(function(p, c) {return p + c}) / 1000;
+  var biking  = 40/1000; // cals per metre
+  var walking = 94/1000; // cals per metre
 
-    if ( modes.indexOf('WALKING') > -1 ) {
-      return dist * walking;
-    } else if (modes.indexOf('BICYCLING') > -1 ) {
-      return dist * biking;
-    } else {
-      return 0;
-    }
-  };
-}]);
-piespermileApp.filter('totalDist', ['$log', function($log) {
   return function(aRoute) {
-    return aRoute.legs.map(function(x) {return x.distance.value}).reduce(function(p, c) {return p + c});
+    var calories = aRoute.modes['walking'] * walking + aRoute.modes['bicycling'] * biking;
+    return calories;
   };
 }]);
 
@@ -49,15 +29,9 @@ piespermileApp.filter('mileize', ['$log', function($log) {
 
 piespermileApp.filter('getModes', ['$log', function($log) {
   return function(aRoute) {
-    var getModes = function(leg) {
-      $log.info(leg.steps[0]);
-      return leg.steps.map(function(x) {return x.travel_mode});
-    }
-    return aRoute.legs.map(getModes).
-      reduce(function(p,c) { return p.join(c); }).
-      filter(function (item, index, self) {
-        return self.indexOf(item) == index;
-      }).join(", ");
+    return Object.keys(aRoute.modes).filter(function(x) {
+      return aRoute.modes[x] > 0;
+    }).join(', ');
   };
 }]);
 
@@ -89,8 +63,8 @@ piespermileApp.controller('piespermileMainController', ['$log', '$location', 'pi
     function( $log, $location, piespermileRoute ) {
       $log.info('main controller initialising');
       var self = this;
-      self.start = '13, Melbourne Street, Hebden Bridge';
-      self.end = 'Mytholmroyd';
+      self.start = 'Hebden Bridge Town Hall, St George\'s St, Hebden Bridge, West Yorkshire HX7 7BY';
+      self.end = 'Town Hall, Crossley Street, Halifax, West Yorkshire, HX1 1UJ.';
       self.go = function() {
         piespermileRoute.getRoute(self.start, self.end);
         $location.path('/route');

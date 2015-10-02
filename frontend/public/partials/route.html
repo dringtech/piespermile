@@ -1,10 +1,10 @@
 <p>Here are your route options</p>
 <ul>
 <li ng-repeat="route in ctrl.routes()">
-  {{route.routes[0] | getModes }} &mdash;
-  {{ route.routes[0].summary }} &mdash;
-  {{ route.routes[0] | totalDist | mileize }} &mdash;
-  a {{ route.routes[0] | calories | pievalue }} pie journey
+  {{ route | getModes }} &mdash;
+  {{ route.source.routes[0].summary }} &mdash;
+  {{ route.distance | mileize }} &mdash;
+  a {{ route | calories | pievalue }} pie journey
 </li>
 </ul>
 <!--
