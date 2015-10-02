@@ -1,3 +1,5 @@
+'use strict';
+
 // var mongoose = require('mongoose');
 var debug = require('debug')('backend/route');
 
@@ -13,12 +15,12 @@ var google = require('./google');
 
 // Set up routes
 var router = express();
-var options = {
-    findOneAndUpdate: false,
-    lowercase: true,
-    strict: true,
-    fullErrors: true
-};
+// var options = {
+//     findOneAndUpdate: false,
+//     lowercase: true,
+//     strict: true,
+//     fullErrors: true
+// };
 // restify.serve(router, model.DataSet, options);
 
 router.route('/api/route/:from/:to')
@@ -27,13 +29,13 @@ router.route('/api/route/:from/:to')
     // think of it as route specific middleware!
     next();
   })
-  .get(function(req, res, next) {
-    debug("Planning " + req.params.from + " -> " + req.params.to);
+  .get(function(req, res) {
+    debug('Planning ' + req.params.from + ' -> ' + req.params.to);
     // res.json(...);
     var r = google.getRoute(req.params.from, req.params.to);
     r.then(function(output) {
       res.json(output);
-    })
+    });
   });
 
 module.exports = router;
