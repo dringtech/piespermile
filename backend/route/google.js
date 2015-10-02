@@ -2,58 +2,50 @@ var q = require('q');
 var google_key=process.env.GOOGLE_API_KEY;
 var request = require('request');
 
-// TODO REFACTOR this
+const WALKING_MODE='walking';
+const DRIVING_MODE='driving';
+const CYCLING_MODE='bicycling'
+const TRANSIT_MODE='transit';
 
-var getCarRoute=function(from, to) {
+var getGoogleDirections=function(from, to, mode) {
+  if (from == null) throw "'from' must be defined";
+  if (to == null) throw "'to' must be defined";
+  if (mode == null) mode = DRIVING_MODE;
   var deferred = q.defer();
-  var api_call = 'https://maps.googleapis.com/maps/api/directions/json?origin='+from+'&destination='+to+'&sensor=false&key='+google_key
-
+  var options = {
+    origin: from,
+    destination: to,
+    mode: mode,
+    key: google_key
+  }
+  params = Object.keys(options).map(function(k) { return k + '=' + encodeURIComponent(options[k]) ;}).join('&')
+  var api_call = 'https://maps.googleapis.com/maps/api/directions/json?'+params;
   request(api_call, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
+    if (error != null) throw error;
+    if (response.statusCode == 200) {
       deferred.resolve(JSON.parse(body));
+    } else {
+      throw response.statusMessage + ' (HTTP ' + response.statusCode + ')';
     }
   })
-
   return deferred.promise;
 }
 
-var getCyclingRoute=function(from, to) {
-  var deferred = q.defer();
-  var api_call = 'https://maps.googleapis.com/maps/api/directions/json?mode=bicycling&origin='+from+'&destination='+to+'&sensor=false&key='+google_key
-
-  request(api_call, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      deferred.resolve(JSON.parse(body));
-    }
-  })
-
-  return deferred.promise;
+var getCarRoute=function(from, to) {
+  return getGoogleDirections(from, to, DRIVING_MODE);
 }
 
 var getWalkingRoute=function(from, to) {
-  var deferred = q.defer();
-  var api_call = 'https://maps.googleapis.com/maps/api/directions/json?mode=walking&origin='+from+'&destination='+to+'&sensor=false&key='+google_key
-
-  request(api_call, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      deferred.resolve(JSON.parse(body));
-    }
-  })
-
-  return deferred.promise;
+  return getGoogleDirections(from, to, WALKING_MODE);
 }
 
+var getCyclingRoute=function(from, to) {
+  return getGoogleDirections(from, to, CYCLING_MODE);
+}
+
+
 var getTransitRoute=function(from, to) {
-  var deferred = q.defer();
-  var api_call = 'https://maps.googleapis.com/maps/api/directions/json?mode=transit&origin='+from+'&destination='+to+'&sensor=false&key='+google_key
-
-  request(api_call, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      deferred.resolve(JSON.parse(body));
-    }
-  })
-
-  return deferred.promise;
+  return getGoogleDirections(from, to, TRANSIT_MODE);
 }
 
 var getRoutes = function(from, to) {

@@ -32,5 +32,8 @@
     "npm": "3.3.4"
   },
   "license": "MIT",
-  "repository": "dringtech/piespermile"
+  "repository": "dringtech/piespermile",
+  "devDependencies": {
+    "rewire": "^2.3.4"
+  }
 }
