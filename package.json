@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "description": "App created at the @wutheringbytes #ourtechfuture hackathon on 1st October 2015",
   "scripts": {
-    "start": "DEBUG='main backend*' node ./bin/app"
+    "start": "DEBUG='main backend*' node --harmony ./bin/app"
   },
   "dependencies": {
     "angular": "^1.4.7",
