@@ -15,6 +15,25 @@ h1, h2, h3, h4 {
   height: 100%;
 }
 
+.crazy {
+  font-family: '3dumbregular';
+  font-size: 120%;
+}
+
+.centred {
+  text-align: center;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#route-entry label {
+  width: 100px;
+}
+#route-entry input {
+  width: 300px;
+}
+
 // Copyright 2015 Giles Dring
 
 // Licensed under the Apache License, Version 2.0 (the "License");

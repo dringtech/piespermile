@@ -62,19 +62,18 @@ piespermileApp.config(['$routeProvider',
 piespermileApp.controller('piespermileMainController', ['$log', '$location', 'piespermileRoute',
     function( $log, $location, piespermileRoute ) {
       $log.info('main controller initialising');
-      var self = this;
-      self.start = 'Hebden Bridge Town Hall, St George\'s St, Hebden Bridge, West Yorkshire HX7 7BY';
-      self.end = 'Town Hall, Crossley Street, Halifax, West Yorkshire, HX1 1UJ.';
-      self.go = function() {
-        piespermileRoute.getRoute(self.start, self.end);
-        $location.path('/route');
-      }
     }
     ]);
 
 piespermileApp.controller('piespermileRouteController', ['$log', 'piespermileRoute',
   function($log, piespermileRoute) {
     var controller = this;
+    var self = this;
+    self.start = 'Hebden Bridge Town Hall, St George\'s St, Hebden Bridge, West Yorkshire HX7 7BY';
+    self.end = 'Town Hall, Crossley Street, Halifax, West Yorkshire, HX1 1UJ.';
+    self.go = function() {
+      piespermileRoute.getRoute(self.start, self.end);
+    }
     controller.routes = piespermileRoute.result;
   }
   ]);

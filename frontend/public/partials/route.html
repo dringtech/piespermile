@@ -1,3 +1,21 @@
+<h1>Route Planner</h1>
+<div id='route-entry'>
+  <p>Where are you travelling to today?</p>
+
+  <div>
+  <label for='start'>Start:</label>
+  <input id='start' type='text' ng-model='ctrl.start'></input>
+  </div>
+  <map>
+  <div>
+  </map>
+  <label for='end'>End:</label>
+  <input id='end' type='text' ng-model='ctrl.end'></input>
+  </div>
+  <button ng-click='ctrl.go()'>Go!</button>
+</div>
+
+<div>
 <p>Here are your route options</p>
 <ul>
 <li ng-repeat="route in ctrl.routes()">
@@ -7,6 +25,7 @@
   a {{ route | calories | pievalue }} pie journey
 </li>
 </ul>
+</div>
 <!--
   Copyright 2015 Giles Dring
 
