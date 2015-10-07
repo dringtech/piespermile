@@ -1,5 +1,5 @@
 var piespermileApp = angular.module('piespermileApp', [
-  'ngRoute', 'ngResource', 'mgcrea.ngStrap', 'leaflet-directive', 'nemLogging'
+  'ppm.auth', 'ngRoute', 'ngResource', 'mgcrea.ngStrap', 'leaflet-directive', 'nemLogging'
 ]);
 
 piespermileApp.filter('pievalue', ['$log', function($log) {
@@ -53,6 +53,10 @@ piespermileApp.config(['$routeProvider',
       when('/about', {
         templateUrl: '/partials/about.html',
         controller: 'piespermileAboutController as ctrl'
+      }).
+      when('/login', {
+        templateUrl: '/partials/login.html',
+        controller: 'ppmLoginController as login'
       }).
       otherwise({
         redirectTo: '/'
@@ -113,6 +117,13 @@ piespermileApp.controller('piespermileAboutController', ['$log',
         $log.info('about controller initialising');
     }
     ]);
+
+piespermileApp.controller('ppmLoginController', ['$log', 'ppmAuthTwitter',
+  function($log, ppmAuthTwitter) {
+    var controller = this;
+    controller.loginWithTwitter = ppmAuthTwitter.loginWithTwitter;
+  }
+]);
 
 piespermileApp.factory('piespermileRoute', ['$log', '$resource',
   function($log, $resource) {
