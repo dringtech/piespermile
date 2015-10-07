@@ -9,6 +9,7 @@ router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride());
 
 router.use(require('./route'));
+router.use(require('./auth'));
 
 module.exports = router;
 
