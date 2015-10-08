@@ -8,8 +8,9 @@ router.use(bodyParser.json());
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(methodOverride());
 
-router.use(require('./route'));
 router.use(require('./auth'));
+router.use(require('./route'));
+router.use(require('./profile').router);
 
 module.exports = router;
 
